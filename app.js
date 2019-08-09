@@ -5,11 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var web_index = require('./routes/web_link/index');
-var hbuilderAppJsonIndex = require('./routes/hbuilderAppJsonIndex');
-var hbuilderAppJson = require('./routes/hbuilderAppJson');
+// var index = require('./routes/index');
+// var users = require('./routes/users');
+// var web_index = require('./routes/web_link/index');
+// var hbuilderAppJsonIndex = require('./routes/hbuilderAppJsonIndex');
+// var hbuilderAppJson = require('./routes/hbuilderAppJson');
+
+var index = require('./dist/index');
+var users = require('./dist/users');
+var web_index = require('./dist/web_link/index');
+var hbuilderAppJsonIndex = require('./dist/hbuilderAppJsonIndex');
+var hbuilderAppJson = require('./dist/hbuilderAppJson');
 
 var app = express();
 
