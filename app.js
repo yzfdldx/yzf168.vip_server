@@ -5,17 +5,20 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// var index = require('./routes/index');
-// var users = require('./routes/users');
-// var web_index = require('./routes/web_link/index');
-// var hbuilderAppJsonIndex = require('./routes/hbuilderAppJsonIndex');
-// var hbuilderAppJson = require('./routes/hbuilderAppJson');
+// 开发环境或者部署
+var dev = 'routes';
+var pre = 'dist';
+var this_dev = pre;
 
-var index = require('./dist/index');
-var users = require('./dist/users');
-var web_index = require('./dist/web_link/index');
-var hbuilderAppJsonIndex = require('./dist/hbuilderAppJsonIndex');
-var hbuilderAppJson = require('./dist/hbuilderAppJson');
+// 页面配置文件
+var index = require('./' + this_dev + '/index'); // pc首页
+var xiaoshuo_web_index = require('./' + this_dev + '/xiaoshuo/index.js'); // 小说
+var users = require('./' + this_dev + '/users');
+// 接口配置文件
+var web_index = require('./' + this_dev + '/web_link/index'); // pc首页
+var xiaoshuo_json = require('./' + this_dev + '/xiaoshuo/index_json.js'); // 小说
+var hbuilderAppJsonIndex = require('./' + this_dev + '/hbuilderAppJsonIndex');
+var hbuilderAppJson = require('./' + this_dev + '/hbuilderAppJson');
 
 var app = express();
 
@@ -48,12 +51,33 @@ app.all('*', function(req, res, next) {
 //     if(req.method=="OPTIONS") res.send(200);/*让options请求快速返回*/
 //     else  next();
 // });
+var hostType = 'www';
+app.use((req, res, next)=>{
+  try {
+    var host = req.host.split('.')[0];
+    hostType = host ? host : 'www';
+    if (hostType === 'www') {
+      index(req, res, next)
+    } else if (hostType === 'xiaoshuo') {
+      xiaoshuo_web_index(req, res, next)
+    } else {
+      users(req, res, next)
+    }
+  } catch (error) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  }
+});
 
-app.use('/', index);
-app.use('/users', users);
+// app.use('/', index);
+// app.use('/users', users);
 
 // 线上要部署的页面请求
 app.use('/web/index', web_index);
+
+// 小说页面请求
+app.use('/xiaoshuo', xiaoshuo_json);
 
 // app请求
 app.use('/appData', hbuilderAppJsonIndex);
