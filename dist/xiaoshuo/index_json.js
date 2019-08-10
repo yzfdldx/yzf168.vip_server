@@ -136,10 +136,6 @@ router.get('/details.json', (req, res, next) => { // 文章详情
               down
             }
           })
-          res.send({
-            result: 'succeed',
-            data: Arr,
-          })
         } else {
           res.send({
             result: 'error',
