@@ -25,10 +25,10 @@ router.get('/search.json', (req, res, next) => { // 查询列表
   var Url = encodeURI(`https://www.xiashutxt.com/search.html?searchtype=${query.searchtype ? query.searchtype : 'all' }&searchkey=${query.searchkey}&page=${query.page ? query.page : '1'}`);
   download(Url, function( data ) {
     if(data){
-      const $ = cheerio.load(data);
-      const Arr = [];
+      var $ = cheerio.load(data);
+      var Arr = [];
       $("#waterfall .item").each(function(i,elem){
-        const Json = {};
+        var Json = {};
         $(this).find(".title a").each(function(i,elem){
           Json.name = $(this).text();
           try {
@@ -61,9 +61,7 @@ router.get('/search.json', (req, res, next) => { // 查询列表
         result: 'succeed',
         data: {
           list: Arr,
-          page: {
-            ...page
-          }
+          page: page
         }
       })
     } else {
