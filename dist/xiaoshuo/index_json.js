@@ -229,7 +229,7 @@ router.get('/catalog.json', (req, res, next) => { // 文章目录
   })
 });
 
-router.get('/text.json', async (req, res, next) => { // 文章内容
+router.get('/text.json', (req, res, next) => { // 文章内容
   const query = req.query;
   if (!query.id) {
     res.send({
