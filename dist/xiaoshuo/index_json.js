@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var https = require('https');
-const cheerio = require("cheerio");
+var cheerio = require("cheerio");
 
 function download ( url, callback ) {
   https.get( url,function(res){
@@ -20,9 +20,9 @@ function download ( url, callback ) {
 }
 
 // https://www.xiashutxt.com/ 下书网 爬取 ****************************
-router.get('/search.json', async (req, res, next) => { // 查询列表
-  const query = req.query;
-  const Url = encodeURI(`https://www.xiashutxt.com/search.html?searchtype=${query.searchtype ? query.searchtype : 'all' }&searchkey=${query.searchkey}&page=${query.page ? query.page : '1'}`);
+router.get('/search.json', (req, res, next) => { // 查询列表
+  var query = req.query;
+  var Url = encodeURI(`https://www.xiashutxt.com/search.html?searchtype=${query.searchtype ? query.searchtype : 'all' }&searchkey=${query.searchkey}&page=${query.page ? query.page : '1'}`);
   download(Url, function( data ) {
     if(data){
       const $ = cheerio.load(data);
@@ -75,7 +75,7 @@ router.get('/search.json', async (req, res, next) => { // 查询列表
   })
 });
 
-router.get('/details.json', async (req, res, next) => { // 文章详情
+router.get('/details.json', (req, res, next) => { // 文章详情
   const query = req.query;
   if (!query.id) {
     res.send({
@@ -158,7 +158,7 @@ router.get('/details.json', async (req, res, next) => { // 文章详情
   })
 });
 
-router.get('/catalog.json', async (req, res, next) => { // 文章目录
+router.get('/catalog.json', (req, res, next) => { // 文章目录
   const query = req.query;
   if (!query.id) {
     res.send({
